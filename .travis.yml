@@ -1,0 +1,16 @@
+language: go
+go: 1.5
+before_install:
+  - go get golang.org/x/tools/cmd/cover # Get the tool for test coverage calculation.
+  - go get github.com/pierrre/gotestcover # Get the tool for multiple packages' coverage results merging.
+
+  # Add Go projects' executables to GOPATH. So, they are accessible by their name without full path.
+  - export PATH=$PATH:${GOPATH%%:*}/bin:${GOPATH##:*}/bin
+install:
+  - go get -t github.com/goaltools/iniflag/... # Get repo's dependencies, if any.
+script:
+  # Run tests with "--race" and "-v" ("verbose output") flags and
+  # calculate the test coverage of the repo and its subpackages, if necessary.
+  - gotestcover -coverprofile=coverage.txt --race -v github.com/goaltools/iniflag/...
+after_success:
+  - bash <(curl -s https://codecov.io/bash) # Send the coverage profile to codecov service.
