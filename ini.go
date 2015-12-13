@@ -45,7 +45,7 @@ func (c *config) parse(file string) error {
 
 // join gets a maps of maps, and joins it with c.body.
 // The input map has a priority (it overrides values of c.body).
-func (c *config) join(m map[string]map[string]string) {
+func (c *config) join(m ini.Config) {
 	// Iterating over all available sections in the config.
 	for section := range m {
 		// Make sure such section exists in the source map.
