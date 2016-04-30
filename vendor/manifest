@@ -1,0 +1,13 @@
+{
+	"version": 0,
+	"dependencies": [
+		{
+			"importpath": "github.com/Thomasdezeeuw/ini",
+			"repository": "https://github.com/Thomasdezeeuw/ini",
+			"vcs": "git",
+			"revision": "c57cb74a90db4eca7390ac08992f7555eabfc1aa",
+			"branch": "master",
+			"notests": true
+		}
+	]
+}
