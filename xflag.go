@@ -5,6 +5,9 @@ package xflag
 import (
 	"flag"
 	"os"
+
+	"github.com/conveyer/xflag/config"
+	"github.com/conveyer/xflag/ini"
 )
 
 // Example:
@@ -27,11 +30,15 @@ import (
 //		}
 //	}
 
+// DefaultConfig defines a format of configuration file
+// that will be used by the package.
+var DefaultConfig config.Interface = &ini.Config{}
+
 // Context represents a single instance of xflag.
 // It contains available arguments and parsed configuration files.
 type Context struct {
 	args []string
-	conf Config
+	conf config.Interface
 }
 
 // New allocates and returns a new Context.
@@ -64,7 +71,7 @@ func (c *Context) ParseSet(fset *flag.FlagSet) error {
 	// Iterate over all available flags.
 	fset.VisitAll(func(f *flag.Flag) {
 		// Check whether we have such flag in the configuration files.
-		if v, ok := c.conf.Get(parseArgName(f.Name)); ok {
+		if v, ok := c.conf.Get(f.Name); ok {
 			// If so, use it.
 			// Before that replace environment values by
 			// the correspondent values.

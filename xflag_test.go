@@ -19,7 +19,9 @@ func TestParse(t *testing.T) {
 	os.Args = []string{os.Args[0], "--arg", "value"}
 
 	err := Parse("./testdata/file1.ini", "./testdata/file2.ini")
-	assertNil(t, err)
+	if err != nil {
+		t.Errorf(`No error expected, got "%v".`, err)
+	}
 
 	if *f1 != build.Default.GOPATH || *f2 != "value2" || *f3 != "value" || *f4 != "default" {
 		t.Errorf("Incorrect value of one of the flags.")

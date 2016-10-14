@@ -40,7 +40,7 @@ var (
 )
 
 func main() {
-	err := xflags.Parse("/path/to/file1.ini")
+	err := xflag.Parse("/path/to/file1.ini")
 	if err != nil {
 		panic(err)
 	}
@@ -55,9 +55,9 @@ But if we run the program above as `$ main --age 99` the value will be `age = 99
 no matter what inside the configuration file is.
 
 #### Multiple Files
-Function `xflags.Parse(...)` may get any number of paths to INI files. E.g.:
+Function `xflag.Parse(...)` may get any number of paths to INI files. E.g.:
 ```go
-xflags.Parse("file1.ini", "file2.ini", "file3.ini")
+xflag.Parse("file1.ini", "file2.ini", "file3.ini")
 ```
 Every subsequent file will override values conflicting with the previous one. I.e. `file3.ini` has higher priority than
 `file2.ini`. And if both contain `name = ...`, the value from `file3.ini` will be used.

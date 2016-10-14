@@ -1,14 +1,10 @@
-package xflag
+package config
 
-// DefaultConfig defines a format of configuration file
-// that will be used by the package.
-var DefaultConfig Config = &INIConfig{}
-
-// Config interface describes the methods that must be implemented
+// Interface describes the methods that must be implemented
 // in order to add support of an arbitrary configuration file format.
-type Config interface {
+type Interface interface {
 	// New should allocate and return a new instance of Config.
-	New() Config
+	New() Interface
 
 	// Parse should open and parse the requested configuration file.
 	// It should be possible to call it a few times, so the files
@@ -21,8 +17,8 @@ type Config interface {
 	// the Config.
 	Join(interface{}) error
 
-	// Get receives 2 arguments as keys and returns a string value associated
-	// with them as a result. If no values are found, an empty string and false
+	// Get receives an argument name and returns a string value associated
+	// with it as a result. If no values are found, an empty string and false
 	// as a second result are returned.
-	Get(string, string) (string, bool)
+	Get(string) (string, bool)
 }

@@ -1,24 +1,24 @@
-package xflag
+package ini
 
 import (
 	"reflect"
 	"testing"
 )
 
-func TestINIConfigParse_NonExistentFile(t *testing.T) {
-	if err := (&INIConfig{}).New().Parse("file_that_does_not_exist"); err == nil {
+func TestConfigParse_NonExistentFile(t *testing.T) {
+	if err := (&Config{}).New().Parse("file_that_does_not_exist"); err == nil {
 		t.Errorf("File does not exist, error expected.")
 	}
 }
 
-func TestINIConfigParse_InvalidConfig(t *testing.T) {
-	if err := (&INIConfig{}).New().Parse("./testdata/invalid.ini"); err == nil {
+func TestConfigParse_InvalidConfig(t *testing.T) {
+	if err := (&Config{}).New().Parse("./testdata/invalid.ini"); err == nil {
 		t.Errorf("INI file is invalid, error expected.")
 	}
 }
 
-func TestINIConfigParse(t *testing.T) {
-	c := &INIConfig{
+func TestConfigParse(t *testing.T) {
+	c := &Config{
 		body: map[string]map[string]string{},
 	}
 	err := c.Parse("./testdata/config1.ini")
@@ -49,8 +49,8 @@ func TestINIConfigParse(t *testing.T) {
 	}
 }
 
-func TestINIConfigGet(t *testing.T) {
-	c := &INIConfig{
+func TestConfigGet(t *testing.T) {
+	c := &Config{
 		body: map[string]map[string]string{
 			"": {
 				"key1": "value1",
@@ -70,7 +70,7 @@ func TestINIConfigGet(t *testing.T) {
 		"":            {Found: false},
 		"paths:zzz":   {Found: false},
 	} {
-		if v, f := c.Get(parseArgName(a)); v != vs.Value || f != vs.Found {
+		if v, f := c.Get(a); v != vs.Value || f != vs.Found {
 			t.Errorf(
 				`Requested "%s". Expected "%s", "%v"; got "%s", "%v".`,
 				a, vs.Value, vs.Found, v, f,
@@ -79,9 +79,29 @@ func TestINIConfigGet(t *testing.T) {
 	}
 }
 
-func TestINIConfigJoin_IncorrectArgument(t *testing.T) {
-	if (&INIConfig{}).Join(157) == nil {
+func TestConfigJoin_IncorrectArgument(t *testing.T) {
+	if (&Config{}).Join(157) == nil {
 		t.Fail()
+	}
+}
+
+func TestParseArgName(t *testing.T) {
+	for k, vs := range map[string][]string{
+		"key":               {"", "key"},
+		"section:key":       {"section", "key"},
+		"section:":          {"section", ""},
+		":key":              {"", "key"},
+		":":                 {"", ""},
+		"":                  {"", ""},
+		"::":                {"", ":"},
+		"section:some:key:": {"section", "some:key:"},
+	} {
+		if sec, key := parseArgName(k); sec != vs[0] || key != vs[1] {
+			t.Errorf(
+				`Input "%s": Expected "%s", "%s"; got "%s", "%s".`,
+				k, vs[0], vs[1], sec, key,
+			)
+		}
 	}
 }
 
