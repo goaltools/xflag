@@ -1,6 +1,6 @@
-// Package iniflag is an abstraction around standard go's flag,
-// environment variables, and ini configuration reader.
-package iniflag
+// Package xflag is an abstraction around the Go's standard "flag"
+// package, INI or other configuration files, and environment variables.
+package xflag
 
 import (
 	"flag"
@@ -15,41 +15,41 @@ import (
 //		"flag"
 //		"log"
 //
-//		"github.com/colegion/contrib/configs/iniflag"
+//		"github.com/conveyer/xflag"
 //	)
 //
 //	var sampleFlag = flag.String("test:sample", "default value", "comment here...")
 //
 //	func main() {
-//		err := iniflag.Parse("path/to/file1.ini", "path/to/file2.ini")
+//		err := xflag.Parse("path/to/file1.ini", "path/to/file2.ini")
 //		if err != nil {
 //			log.Fatalf(err)
 //		}
 //	}
 
-// Context represents a single instance of iniflag.
+// Context represents a single instance of xflag.
 // It contains available arguments and parsed configuration files.
 type Context struct {
 	args []string
-	conf *config
+	conf Config
 }
 
 // New allocates and returns a new Context.
-// Arguments should not include the command name.
+// Input arguments should not include the command name.
 func New(args []string) *Context {
 	return &Context{
 		args: args,
-		conf: newConfig(),
+		conf: DefaultConfig.New(),
 	}
 }
 
-// Files gets a number of INI configuration files and
-// parses them. An error is returned if some file does not exist
-// or it is of invalid format.
+// Files method gets a number of INI configuration files and
+// parses them. An error is returned if some of the files do not exist
+// or their format is not valid.
 // Every subsequent file overrides conflicting values of the previous one.
 func (c *Context) Files(files ...string) error {
 	for i := range files {
-		if err := c.conf.parse(files[i]); err != nil {
+		if err := c.conf.Parse(files[i]); err != nil {
 			return err
 		}
 	}
@@ -57,16 +57,18 @@ func (c *Context) Files(files ...string) error {
 }
 
 // ParseSet parses flag definitions using the following sources:
-// 1. INI configuration files (that supports Environment variables);
-// 2. argument list.
+// 1. Configuration files (that may contain Environment variables);
+// 2. Command argument list.
 // The latter has higher priority.
 func (c *Context) ParseSet(fset *flag.FlagSet) error {
 	// Iterate over all available flags.
 	fset.VisitAll(func(f *flag.Flag) {
 		// Check whether we have such flag in the configuration files.
-		if v, ok := c.conf.get(parseArgName(f.Name)); ok {
+		if v, ok := c.conf.Get(parseArgName(f.Name)); ok {
 			// If so, use it.
-			f.Value.Set(v)
+			// Before that replace environment values by
+			// the correspondent values.
+			f.Value.Set(replaceEnvVars(v))
 		}
 	})
 
@@ -80,12 +82,16 @@ func (c *Context) Parse() error {
 	return c.ParseSet(flag.CommandLine)
 }
 
-// Parse is a shorthand for the following:
-//	c := iniflag.New(os.Args[1:])
+// Parse is a shorthand for the following code:
+//	c := xflag.New(os.Args[1:])
 //	err := c.Files(files...)
-//	AssertNil(err)
+//	if err != nil {
+//		...
+//	}
 //	err = c.Parse()
-//	AssertNil(err)
+//	if err != nil {
+//		...
+//	}
 func Parse(files ...string) error {
 	// Allocate a new context using os.Args as input.
 	c := New(os.Args[1:])

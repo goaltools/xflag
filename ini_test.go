@@ -1,31 +1,31 @@
-package iniflag
+package xflag
 
 import (
-	"fmt"
-	"go/build"
 	"reflect"
 	"testing"
 )
 
-func TestConfigParse_NonExistentFile(t *testing.T) {
-	if err := newConfig().parse("file_that_does_not_exist"); err == nil {
+func TestINIConfigParse_NonExistentFile(t *testing.T) {
+	if err := (&INIConfig{}).New().Parse("file_that_does_not_exist"); err == nil {
 		t.Errorf("File does not exist, error expected.")
 	}
 }
 
-func TestConfigParse_InvalidConfig(t *testing.T) {
-	if err := newConfig().parse("./testdata/invalid.ini"); err == nil {
+func TestINIConfigParse_InvalidConfig(t *testing.T) {
+	if err := (&INIConfig{}).New().Parse("./testdata/invalid.ini"); err == nil {
 		t.Errorf("INI file is invalid, error expected.")
 	}
 }
 
-func TestConfigParse(t *testing.T) {
-	c := newConfig()
-	err := c.parse("./testdata/config1.ini")
+func TestINIConfigParse(t *testing.T) {
+	c := &INIConfig{
+		body: map[string]map[string]string{},
+	}
+	err := c.Parse("./testdata/config1.ini")
 	assertNil(t, err)
-	err = c.parse("./testdata/config2.ini")
+	err = c.Parse("./testdata/config2.ini")
 	assertNil(t, err)
-	err = c.parse("./testdata/config3.ini")
+	err = c.Parse("./testdata/config3.ini")
 	assertNil(t, err)
 
 	exp := map[string]map[string]string{
@@ -49,8 +49,8 @@ func TestConfigParse(t *testing.T) {
 	}
 }
 
-func TestConfigGet(t *testing.T) {
-	c := &config{
+func TestINIConfigGet(t *testing.T) {
+	c := &INIConfig{
 		body: map[string]map[string]string{
 			"": {
 				"key1": "value1",
@@ -65,17 +65,23 @@ func TestConfigGet(t *testing.T) {
 		Found bool
 	}{
 		"key1":        {Value: "value1", Found: true},
-		"paths:xxx":   {Value: fmt.Sprintf("%[1]s - %[1]s", build.Default.GOPATH), Found: true},
+		"paths:xxx":   {Value: "${GOPATH} - ${GOPATH}", Found: true},
 		"section:key": {Found: false},
 		"":            {Found: false},
 		"paths:zzz":   {Found: false},
 	} {
-		if v, f := c.get(parseArgName(a)); v != vs.Value || f != vs.Found {
+		if v, f := c.Get(parseArgName(a)); v != vs.Value || f != vs.Found {
 			t.Errorf(
 				`Requested "%s". Expected "%s", "%v"; got "%s", "%v".`,
 				a, vs.Value, vs.Found, v, f,
 			)
 		}
+	}
+}
+
+func TestINIConfigJoin_IncorrectArgument(t *testing.T) {
+	if (&INIConfig{}).Join(157) == nil {
+		t.Fail()
 	}
 }
 

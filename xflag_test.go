@@ -1,7 +1,8 @@
-package iniflag
+package xflag
 
 import (
 	"flag"
+	"go/build"
 	"os"
 	"testing"
 )
@@ -20,7 +21,7 @@ func TestParse(t *testing.T) {
 	err := Parse("./testdata/file1.ini", "./testdata/file2.ini")
 	assertNil(t, err)
 
-	if *f1 != "value1" || *f2 != "value2" || *f3 != "value" || *f4 != "default" {
+	if *f1 != build.Default.GOPATH || *f2 != "value2" || *f3 != "value" || *f4 != "default" {
 		t.Errorf("Incorrect value of one of the flags.")
 	}
 }

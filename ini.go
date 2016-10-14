@@ -1,31 +1,27 @@
-package iniflag
+package xflag
 
 import (
+	"errors"
 	"os"
-	"regexp"
 
-	"github.com/Thomasdezeeuw/ini"
+	"github.com/thomasdezeeuw/ini"
 )
 
-// Variables in a ${NAME} form inside configuration file are
-// expected to be treated as ENV vars.
-var envVar = regexp.MustCompile(`\${([A-Za-z0-9._\-]+)}`)
-
-// config represents an INI configuration file.
-type config struct {
+// INIConfig represents an INI configuration file.
+type INIConfig struct {
 	body map[string]map[string]string
 }
 
-// newConfig allocates and returns a new config.
-func newConfig() *config {
-	return &config{
+// New allocates and returns a new config.
+func (c *INIConfig) New() Config {
+	return &INIConfig{
 		body: map[string]map[string]string{},
 	}
 }
 
-// parse opens and parses the requested configuration file.
+// Parse opens and parses the requested configuration file.
 // It may be called multiple times, the files will be joined.
-func (c *config) parse(file string) error {
+func (c *INIConfig) Parse(file string) error {
 	// Trying to open the configuration file.
 	f, err := os.Open(file)
 	if err != nil {
@@ -39,13 +35,17 @@ func (c *config) parse(file string) error {
 	}
 
 	// Join the newly parsed file with the previous one.
-	c.join(m)
-	return nil
+	return c.Join(m)
 }
 
-// join gets a maps of maps, and joins it with c.body.
+// Join gets an ini.Config (maps of maps) interface, and joins it with c.body.
 // The input map has a priority (it overrides values of c.body).
-func (c *config) join(m ini.Config) {
+func (c *INIConfig) Join(newC interface{}) error {
+	m, ok := newC.(ini.Config)
+	if !ok {
+		return errors.New("input argument of ini.Config type expected")
+	}
+
 	// Iterating over all available sections in the config.
 	for section := range m {
 		// Make sure such section exists in the source map.
@@ -58,12 +58,13 @@ func (c *config) join(m ini.Config) {
 			c.body[section][key] = m[section][key]
 		}
 	}
+	return nil
 }
 
-// get receives a key name as input and returns associated
+// Get receives a key name as input and returns associated
 // value in the configuration file, if any.
 // Otherwise, false is returned as the second argument.
-func (c *config) get(section, key string) (string, bool) {
+func (c *INIConfig) Get(section, key string) (string, bool) {
 	// Make sure such section exists.
 	if _, ok := c.body[section]; !ok {
 		return "", false
@@ -75,10 +76,6 @@ func (c *config) get(section, key string) (string, bool) {
 		return "", false
 	}
 
-	// Replace environment variables in the received value
-	// and return it.
-	v = envVar.ReplaceAllStringFunc(v, func(k string) string {
-		return os.Getenv(envVar.ReplaceAllString(k, "$1"))
-	})
+	// If it is, return the associated value.
 	return v, true
 }

@@ -1,4 +1,4 @@
-package iniflag
+package xflag
 
 import (
 	"strings"

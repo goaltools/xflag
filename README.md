@@ -1,6 +1,6 @@
 # xflag
-xflag is a hybrid configuration library that combines Go's standard
-[`flag`](https://golang.org/pkg/flag/) package, INI / YAML / other configuration files,
+Package `xflag` is a hybrid configuration library that combines Go's standard
+[`flag`](https://golang.org/pkg/flag/) package, INI or other configuration files,
 and environment variables.
 
 [![GoDoc](https://godoc.org/github.com/conveyer/xflag?status.svg)](https://godoc.org/github.com/conveyer/xflag)
@@ -17,11 +17,12 @@ go get -u github.com/conveyer/xflag
 
 ### Basic Principles
 1. Every flag has its own default value.
-2. That default value can be overriden by INI / YAML / other configuration file.
+2. That default value can be overriden by INI or some other configuration file.
 *The configuration file may contain Environment Variables, e.g. `${OPENSHIFT_PORT}`.*
 3. It is possible to override values of the configuration file when running your app using flags.
 
 ### Usage
+By default, `INI` configuration files are expected.
 ```go
 package main
 
@@ -76,6 +77,19 @@ name = flag.String("user:name", "...", "...")
 port = flag.Int("database:port", 0, "...")
 ```
 And the values can be overriden by running your app as `$ main --user:name "Jane Roe" --database:port 8888`.
+
+#### Custom Configuration Files
+To add support of a custom configuration file, implement the
+[Config Interface](https://godoc.org/github.com/conveyer/xflag#Config). Use it as follows:
+```go
+package main
+
+import "github.com/conveyer/xflag"
+
+func init() {
+	xflag.DefaultConfig = MyCustomConfig
+}
+```
 
 ### License
 Distributed under the BSD 2-clause "Simplified" License unless otherwise noted.
