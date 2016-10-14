@@ -1,23 +1,25 @@
-# INIFlag
-INIFlag is a hybrid configuration library that combines standard Go's
-[flag](https://golang.org/pkg/flag/), INI files, and environment variables.
+# xflag
+xflag is a hybrid configuration library that combines Go's standard
+[`flag`](https://golang.org/pkg/flag/) package, INI / YAML / other configuration files,
+and environment variables.
 
-[![GoDoc](https://godoc.org/github.com/goaltools/iniflag?status.svg)](https://godoc.org/github.com/goaltools/iniflag)
-[![Build Status](https://travis-ci.org/goaltools/iniflag.svg?branch=master)](https://travis-ci.org/goaltools/iniflag)
-[![Coverage](https://codecov.io/github/goaltools/iniflag/coverage.svg?branch=master)](https://codecov.io/github/goaltools/iniflag?branch=master)
-[![Go Report Card](http://goreportcard.com/badge/goaltools/iniflag?t=3)](http:/goreportcard.com/report/goaltools/iniflag)
+[![GoDoc](https://godoc.org/github.com/conveyer/xflag?status.svg)](https://godoc.org/github.com/conveyer/xflag)
+[![Build Status](https://travis-ci.org/conveyer/xflag.svg?branch=master)](https://travis-ci.org/conveyer/xflag)
+[![Windows Build Status](https://ci.appveyor.com/api/projects/status/ee1b1c8tx7d5k2tc?svg=true)](https://ci.appveyor.com/project/alkchr/xflag)
+[![Coverage](https://codecov.io/github/conveyer/xflag/coverage.svg?branch=master)](https://codecov.io/github/conveyer/xflag?branch=master)
+[![Go Report Card](http://goreportcard.com/badge/conveyer/xflag?t=3)](http:/goreportcard.com/report/conveyer/xflag)
 
 ### Installation
 *Use `-u` ("update") flag to make sure the latest version of package is installed.*
 ```bash
-go get -u github.com/goaltools/iniflag
+go get -u github.com/conveyer/xflag
 ```
 
 ### Basic Principles
 1. Every flag has its own default value.
-2. That default value can be overriden by INI configuration file.
-*INI configuration file may contain Environment Variables, e.g. `${OPENSHIFT_PORT}`.*
-3. It is possible to override values of INI configuration file when running your app using flags.
+2. That default value can be overriden by INI / YAML / other configuration file.
+*The configuration file may contain Environment Variables, e.g. `${OPENSHIFT_PORT}`.*
+3. It is possible to override values of the configuration file when running your app using flags.
 
 ### Usage
 ```go
@@ -26,7 +28,7 @@ package main
 import (
 	"flag"
 
-	"github.com/goaltools/iniflag"
+	"github.com/conveyer/xflag"
 )
 
 var (
@@ -37,7 +39,7 @@ var (
 )
 
 func main() {
-	err := iniflags.Parse("/path/to/file1.ini")
+	err := xflags.Parse("/path/to/file1.ini")
 	if err != nil {
 		panic(err)
 	}
@@ -52,9 +54,9 @@ But if we run the program above as `$ main --age 99` the value will be `age = 99
 no matter what inside the configuration file is.
 
 #### Multiple Files
-Function `iniflags.Parse(...)` may get any number of paths to INI files. E.g.:
+Function `xflags.Parse(...)` may get any number of paths to INI files. E.g.:
 ```go
-iniflags.Parse("file1.ini", "file2.ini", "file3.ini")
+xflags.Parse("file1.ini", "file2.ini", "file3.ini")
 ```
 Every subsequent file will override values conflicting with the previous one. I.e. `file3.ini` has higher priority than
 `file2.ini`. And if both contain `name = ...`, the value from `file3.ini` will be used.
