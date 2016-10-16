@@ -1,7 +1,7 @@
 # xflag
 Package `xflag` is a hybrid configuration library that combines Go's standard
 [`flag`](https://golang.org/pkg/flag/) package, INI or other configuration files,
-and environment variables.
+and environment variables. Plus, provides support of slice flags.
 
 [![GoDoc](https://godoc.org/github.com/conveyer/xflag?status.svg)](https://godoc.org/github.com/conveyer/xflag)
 [![Build Status](https://travis-ci.org/conveyer/xflag.svg?branch=master)](https://travis-ci.org/conveyer/xflag)
@@ -78,9 +78,35 @@ port = flag.Int("database:port", 0, "...")
 ```
 And the values can be overriden by running your app as `$ main --user:name "Jane Roe" --database:port 8888`.
 
-#### Custom Configuration Files
-To add support of a custom configuration file, implement the
-[Config Interface](https://godoc.org/github.com/conveyer/xflag#Config). Use it as follows:
+#### Slice flags
+Standard `flag` package supports simple types such as `string`, `int`, etc. Package `xflag`
+brings support of slices.
+```go
+var (
+	names = xflag.Strings("name[]", []string{"John", "Joe"}, "A list of names.")
+	ages  = xflag.Ints("age[]", []int{16, 18}, "A list of ages.")
+)
+```
+A list of supported functions includes:
+`Bools`, `Durations`, `Float64s`, `Ints`, `Int64s`, `Strings`, `Uints`, `Uint64s`.
+
+Your configuration file will look as follows:
+```ini
+name[] = Name1
+name[] = Name2
+
+age[] = 35
+age[] = 46
+```
+
+And in order to pass an array of parameters using console-line, repeat the same flag name multiple times:
+```sh
+$ ./main --name[] James --name[] Bob
+```
+
+#### Custom Configuration Format
+To add support of a custom configuration format, implement the
+[Config Interface](https://godoc.org/github.com/conveyer/xflag#Config). Then use it as follows:
 ```go
 package main
 
