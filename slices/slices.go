@@ -1,6 +1,9 @@
 // Package slices defines slice flag types. So, not only
 // simple types (e.g. string, int, float64) can be used as flags
 // but their slices, too. E.g. []string, []int, etc.
+// Set methods of slice types work pretty much like Add.
+// To make them behave as Set, call Set(EOI) before setting
+// an actual value.
 package slices
 
 const (
@@ -18,9 +21,9 @@ const (
 	// To do it, the following call is required after the code above:
 	//	Set(EOI)
 	// And then we can readd all the required values:
-	// Set("x")
-	// Set("y")
-	// Set("z")
+	//	Set("x")
+	//	Set("y")
+	//	Set("z")
 	EOI = "\t\n\"\000\"\n\t"
 )
 
