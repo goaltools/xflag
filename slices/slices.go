@@ -30,32 +30,32 @@ const (
 // slice is an interface that defines methods that
 // every slice type must implement.
 type slice interface {
-	Len() int
-	Get(i int) string
+	lenght() int
+	get(i int) string
 
-	Alloc()
-	Add(val string)
+	alloc()
+	add(val string) error
 
-	Initialized() bool
-	RequireInit(bool)
+	initialized() bool
+	requireInit(bool)
 }
 
 // base is a type that is wrapped by every real slice
 // type of the package. It provides basic fields
 // and methods.
 type base struct {
-	initialized bool
+	inited bool
 }
 
-// Initialized is a getter of the "initialized" field.
-func (b *base) Initialized() bool {
-	return b.initialized
+// initialized is a getter of the "inited" field.
+func (b *base) initialized() bool {
+	return b.inited
 }
 
-// RequireInit sets an "initialized" mark so the
+// requireInit sets an "initialized" mark so the
 // slice can be reinitialized.
-func (b *base) RequireInit(yes bool) {
-	b.initialized = !yes
+func (b *base) requireInit(yes bool) {
+	b.inited = !yes
 }
 
 // str gets a slice and returns it in a human
@@ -63,34 +63,34 @@ func (b *base) RequireInit(yes bool) {
 func str(s slice) string {
 	// If there are no elements in the slice,
 	// return nothing.
-	l := s.Len()
+	l := s.lenght()
 	if l == 0 {
 		return "[]"
 	}
 
 	// Otherwise, prepare a list and return it.
-	res := s.Get(0)
+	res := s.get(0)
 	for i := 1; i < l; i++ {
-		res += "; " + s.Get(i)
+		res += "; " + s.get(i)
 	}
 	return "[" + res + "]"
 }
 
-func set(s slice, v string) {
+func set(s slice, v string) error {
 	// Check whether the end of the input
 	// is stated.
 	if v == EOI {
-		s.RequireInit(true)
-		return
+		s.requireInit(true)
+		return nil
 	}
 
 	// If the slice is marked as uninitialized,
 	// reallocate it, and set as initialized.
-	if !s.Initialized() {
-		s.RequireInit(false)
-		s.Alloc()
+	if !s.initialized() {
+		s.requireInit(false)
+		s.alloc()
 	}
 
 	// Add a new value.
-	s.Add(v)
+	return s.add(v)
 }

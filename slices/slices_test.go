@@ -6,25 +6,25 @@ import (
 )
 
 func TestBaseInit(t *testing.T) {
-	msg := `Initialized must return "%v", got "%v".`
+	msg := `Method initialized must return "%v", got "%v".`
 
 	e := false
 	b := &base{}
-	ok := b.Initialized()
+	ok := b.initialized()
 	if ok {
 		t.Errorf(msg, e, ok)
 	}
 
 	e = false
-	b.RequireInit(e)
-	ok = b.Initialized()
+	b.requireInit(e)
+	ok = b.initialized()
 	if !ok {
 		t.Errorf(msg, !e, !ok)
 	}
 
 	e = true
-	b.RequireInit(e)
-	ok = b.Initialized()
+	b.requireInit(e)
+	ok = b.initialized()
 	if ok {
 		t.Errorf(msg, e, ok)
 	}
@@ -98,18 +98,19 @@ type test struct {
 	d []string
 }
 
-func (t *test) Len() int {
+func (t *test) lenght() int {
 	return len(t.d)
 }
 
-func (t *test) Get(i int) string {
+func (t *test) get(i int) string {
 	return t.d[i]
 }
 
-func (t *test) Alloc() {
+func (t *test) alloc() {
 	t.d = []string{}
 }
 
-func (t *test) Add(v string) {
+func (t *test) add(v string) error {
 	t.d = append(t.d, v)
+	return nil
 }
