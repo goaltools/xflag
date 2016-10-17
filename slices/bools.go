@@ -1,6 +1,8 @@
 package slices
 
-import "strconv"
+import (
+	"strconv"
+)
 
 // Bools represents a slice of bool values,
 // a type that implements flag.Value and thus

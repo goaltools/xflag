@@ -1,6 +1,8 @@
 package slices
 
-import "strconv"
+import (
+	"strconv"
+)
 
 // Float64s represents a slice of float64 values,
 // a type that implements flag.Value and thus

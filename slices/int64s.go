@@ -1,6 +1,8 @@
 package slices
 
-import "strconv"
+import (
+	"strconv"
+)
 
 // Ints represents a slice of int values,
 // a type that implements flag.Value and thus
@@ -13,6 +15,7 @@ type Ints struct {
 //
 // Methods below implement flag.Value interface.
 //
+
 // String returns the type in a human readable format.
 func (s *Ints) String() string { return str(s) }
 
