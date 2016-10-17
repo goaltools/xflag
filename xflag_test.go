@@ -23,8 +23,15 @@ func TestParse(t *testing.T) {
 		t.Errorf(`No error expected, got "%v".`, err)
 	}
 
-	if *f1 != build.Default.GOPATH || *f2 != "value2" || *f3 != "value" || *f4 != "default" {
-		t.Errorf("Incorrect value of one of the flags.")
+	for val, exp := range map[string]string{
+		*f1: build.Default.GOPATH,
+		*f2: "value2",
+		*f3: "value",
+		*f4: "default",
+	} {
+		if val != exp {
+			t.Errorf(`Incorrect value of the flag. Expected "%s", got "%s".`, exp, val)
+		}
 	}
 }
 

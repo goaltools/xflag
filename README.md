@@ -22,7 +22,7 @@ go get -u github.com/conveyer/xflag
 3. It is possible to override values of the configuration file when running your app using flags.
 
 ### Usage
-By default, `INI` configuration files are expected.
+By default, [`INI` configuration](https://github.com/conveyer/ini#format) files are expected.
 ```go
 package main
 
@@ -70,6 +70,9 @@ name = James Bond
 
 [database]
 port = 28015
+
+[app]
+addr = https://${OPENSHIFT_HOST}:${OPENSHIFT_PORT}
 ```
 Code for use of such kind of configuration file will look as follows (note the flag names):
 ```go

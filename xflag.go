@@ -56,7 +56,7 @@ func New(args []string) *Context {
 // Every subsequent file overrides conflicting values of the previous one.
 func (c *Context) Files(files ...string) error {
 	for i := range files {
-		if err := c.conf.Parse(files[i]); err != nil {
+		if err := c.conf.AddFile(files[i]); err != nil {
 			return err
 		}
 	}
@@ -70,13 +70,8 @@ func (c *Context) Files(files ...string) error {
 func (c *Context) ParseSet(fset *flag.FlagSet) error {
 	// Iterate over all available flags.
 	fset.VisitAll(func(f *flag.Flag) {
-		// Check whether we have such flag in the configuration files.
-		if v, ok := c.conf.Get(f.Name); ok {
-			// If so, use it.
-			// Before that replace environment values by
-			// the correspondent values.
-			f.Value.Set(replaceEnvVars(v))
-		}
+		// And try to set them.
+		c.conf.Prepare(f)
 	})
 
 	// Override the flags that are listed in the arguments.
