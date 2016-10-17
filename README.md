@@ -82,18 +82,18 @@ port = flag.Int("database:port", 0, "...")
 And the values can be overriden by running your app as `$ main --user:name "Jane Roe" --database:port 8888`.
 
 #### Slice Flags
-Standard `flag` package supports simple types such as `string`, `int`, etc. Package `xflag/flags`
-brings support of slices:
+Standard `flag` package supports simple types such as `string`, `int`, etc. Package `xflag/cflag`
+brings support of *complex* types including slices:
 ```go
 var (
-	names = flags.String("name[]", []string{"John", "Joe"}, "A list of names.")
-	ages  = flags.Int("age[]", []int{16, 18}, "A list of ages.")
+	names = cflag.Strings("name[]", []string{"John", "Joe"}, "A list of names.")
+	ages  = cflag.Ints("age[]", []int{16, 18}, "A list of ages.")
 )
 ```
-A list of supported functions includes:
-`Bool`, `Duration`, `Float64`, `Int`, `Int64`, `String`, `Uint`, `Uint64`.
+*A list of related functions includes:*
+*`Bools`, `Durations`, `Float64s`, `Ints`, `Int64s`, `Strings`, `Uints`, `Uint64s`.*
 
-Your configuration file will look as follows:
+Your configuration file may look as follows:
 ```ini
 name[] = Name1
 name[] = Name2
@@ -102,7 +102,7 @@ age[] = 35
 age[] = 46
 ```
 
-And in order to pass an array of parameters using console-line, repeat the same flag name multiple times:
+And in order to pass an array of parameters using console line, repeat the same flag name multiple times:
 ```sh
 $ ./main --name[] James --name[] Bob
 ```

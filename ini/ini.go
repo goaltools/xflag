@@ -6,8 +6,8 @@ import (
 	"flag"
 	"strings"
 
+	"github.com/conveyer/xflag/cflag/slices"
 	"github.com/conveyer/xflag/config"
-	"github.com/conveyer/xflag/flags/slices"
 
 	"github.com/conveyer/ini"
 )

@@ -1,4 +1,4 @@
-package flags_test
+package cflag_test
 
 import (
 	"flag"
@@ -6,36 +6,36 @@ import (
 	"testing"
 	"time"
 
-	"github.com/conveyer/xflag/flags"
+	"github.com/conveyer/xflag/cflag"
 )
 
 var (
-	nilStrs = flags.String("nil[]", nil, "Nil default strings.")
+	nilStrs = cflag.Strings("nil[]", nil, "Nil default strings.")
 
 	defStrs = []string{"a", "b", "c"}
-	strs    = flags.String("name[]", defStrs, "A list of strings.")
+	strs    = cflag.Strings("name[]", defStrs, "A list of strings.")
 
 	defInts = []int{1, 2, 3}
-	ints    = flags.Int("int[]", defInts, "A list of ints.")
+	ints    = cflag.Ints("int[]", defInts, "A list of ints.")
 
 	defInt64s = []int64{1, 2, 3}
-	int64s    = flags.Int64("int64[]", defInt64s, "A list of int64s.")
+	int64s    = cflag.Int64s("int64[]", defInt64s, "A list of int64s.")
 
 	defUints = []uint{1, 2, 3}
-	uints    = flags.Uint("uint[]", defUints, "A list of uints.")
+	uints    = cflag.Uints("uint[]", defUints, "A list of uints.")
 
 	defUint64s = []uint64{1, 2, 3}
-	uint64s    = flags.Uint64("uint64[]", defUint64s, "A list of uint64s.")
+	uint64s    = cflag.Uint64s("uint64[]", defUint64s, "A list of uint64s.")
 
 	defFloat64s = []float64{1, 2, 3}
-	float64s    = flags.Float64("float64[]", defFloat64s, "A list of float64s.")
+	float64s    = cflag.Float64s("float64[]", defFloat64s, "A list of float64s.")
 
 	defBools = []bool{true, false, true}
-	bools    = flags.Bool("bool[]", defBools, "A list of bools.")
+	bools    = cflag.Bools("bool[]", defBools, "A list of bools.")
 
 	dur, _       = time.ParseDuration("1h5m0s")
 	defDurations = []time.Duration{dur}
-	durations    = flags.Duration("duration[]", defDurations, "A list of durations.")
+	durations    = cflag.Durations("duration[]", defDurations, "A list of durations.")
 )
 
 func TestString_NilDefault(t *testing.T) {
