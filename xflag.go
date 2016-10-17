@@ -7,7 +7,7 @@ import (
 	"os"
 
 	"github.com/conveyer/xflag/config"
-	"github.com/conveyer/xflag/ini"
+	"github.com/conveyer/xflag/internal/ini"
 )
 
 // Example:
