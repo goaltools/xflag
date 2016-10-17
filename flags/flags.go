@@ -6,7 +6,7 @@ import (
 	"flag"
 	"time"
 
-	"github.com/conveyer/xflag/slices"
+	"github.com/conveyer/xflag/flags/slices"
 )
 
 // String is an equivalent of flag.String but for []string value.

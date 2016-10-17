@@ -5,7 +5,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/conveyer/xflag/slices"
+	"github.com/conveyer/xflag/flags/slices"
 )
 
 func TestConfigParse_NonExistentFile(t *testing.T) {
