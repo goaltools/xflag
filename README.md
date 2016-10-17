@@ -17,7 +17,7 @@ go get -u github.com/conveyer/xflag
 
 ### Basic Principles
 1. Every flag has its own default value.
-2. That default value can be overriden by INI or some other configuration file.
+2. That default value can be overridden by INI or some other configuration file.
 *The configuration file may contain Environment Variables, e.g. `${OPENSHIFT_PORT}`.*
 3. It is possible to override values of the configuration file when running your app using flags.
 
@@ -125,7 +125,7 @@ func init() {
 	c := xflag.New(MyCustomConfig, os.Args[1:])
 
 	// Parse the configuration files you need.
-	if err := c.Files("/path/to/file1.ini", "...", "/path/to/fileN.ini"); err != nil {
+	if err := c.Files("/path/to/file1.xxx", "...", "/path/to/fileN.xxx"); err != nil {
 		panic(err)
 	}
 
