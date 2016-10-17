@@ -18,25 +18,23 @@ type Interface interface {
 	// New should allocate and return a new instance of Config.
 	New() Interface
 
-	// Parse should open and parse the requested configuration file.
-	Parse(string) error
-
-	// Join should get a new configuration file and merge it with the current one.
-	// Values of the input object have priority over the values of the current configuration.
-	// E.g. if the object we have looks as follows:
+	// AddFile should open and parse one more configuration file
+	// that is expected to be merged with the current one.
+	// Values of a new file must have priority over the values of the
+	// current configuration. E.g. if the config we have looks as follows:
 	//	obj:
 	//		key1 = value1
 	//		key2 = value2
-	// and the input configuration is:
+	// and the new input configuration is:
 	//	obj:
 	//		key2 = another_value
 	//		key3 = value3
-	// Join must turn the original object into:
+	// The original config must be turned into:
 	//	obj:
 	//		key1 = value1
 	//		key2 = another_value
 	//		key3 = value3
-	Join(interface{}) error
+	AddFile(string) error
 
 	// Prepare gets a flag that should be set if a value with appropriate name and
 	// type is presented in the configuration file.

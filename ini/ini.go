@@ -3,7 +3,6 @@
 package ini
 
 import (
-	"errors"
 	"flag"
 	"strings"
 
@@ -25,22 +24,18 @@ func (c *Config) New() config.Interface {
 	}
 }
 
-// Parse opens and parses the requested configuration file.
-// It may be called multiple times, the files will be joined.
-func (c *Config) Parse(file string) (err error) {
-	c.body, err = ini.OpenFile(file)
-	return
+// AddFile opens and parses the requested configuration file
+// and then merges it with the current config.
+func (c *Config) AddFile(file string) error {
+	m, err := ini.OpenFile(file)
+	c.join(m)
+	return err
 }
 
-// Join gets an new configuration object, and joins it with c.body.
+// join gets a new configuration object, and joins it with c.body.
 // The input map has a priority of the current configuration.
 // I.e. it overrides values of c.body.
-func (c *Config) Join(newC interface{}) error {
-	m, ok := newC.(map[string]map[string]interface{})
-	if !ok {
-		return errors.New("input type is of incorrect type")
-	}
-
+func (c *Config) join(m map[string]map[string]interface{}) {
 	// Iterating over all available sections of the input config.
 	for section := range m {
 		// Make sure such section exists in the current config's map.
@@ -53,7 +48,6 @@ func (c *Config) Join(newC interface{}) error {
 			c.body[section][key] = m[section][key]
 		}
 	}
-	return nil
 }
 
 // Prepare gets a flag and initializes it with a value from the configuration

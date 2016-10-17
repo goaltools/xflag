@@ -9,38 +9,29 @@ import (
 )
 
 func TestConfigParse_NonExistentFile(t *testing.T) {
-	if err := (&Config{}).New().Parse("file_that_does_not_exist"); err == nil {
+	if err := (&Config{}).New().AddFile("file_that_does_not_exist"); err == nil {
 		t.Errorf("File does not exist, error expected.")
 	}
 }
 
 func TestConfigParse_InvalidConfig(t *testing.T) {
-	if err := (&Config{}).New().Parse("./testdata/invalid.ini"); err == nil {
+	if err := (&Config{}).New().AddFile("./testdata/invalid.ini"); err == nil {
 		t.Errorf("INI file is invalid, error expected.")
 	}
 }
 
-func TestConfigParseAndJoin(t *testing.T) {
-	c1 := &Config{
+func TestConfigAddFile(t *testing.T) {
+	c := &Config{
 		body: map[string]map[string]interface{}{},
 	}
-	err := c1.Parse("./testdata/config1.ini")
+	err := c.AddFile("./testdata/config1.ini")
 	assertNil(t, err)
 
-	c2 := &Config{
-		body: map[string]map[string]interface{}{},
-	}
-	err = c2.Parse("./testdata/config2.ini")
+	err = c.AddFile("./testdata/config2.ini")
 	assertNil(t, err)
 
-	c3 := &Config{
-		body: map[string]map[string]interface{}{},
-	}
-	err = c3.Parse("./testdata/config3.ini")
+	err = c.AddFile("./testdata/config3.ini")
 	assertNil(t, err)
-
-	c1.Join(c2.body)
-	c1.Join(c3.body)
 
 	exp := map[string]map[string]interface{}{
 		"": {
@@ -58,8 +49,8 @@ func TestConfigParseAndJoin(t *testing.T) {
 			"key1": "value2",
 		},
 	}
-	if !reflect.DeepEqual(exp, c1.body) {
-		t.Errorf("Incorrectly parsed / joined config. Expected:\n%v.\nGot:\n%v.", exp, c1.body)
+	if !reflect.DeepEqual(exp, c.body) {
+		t.Errorf("Incorrectly parsed / joined config. Expected:\n%v.\nGot:\n%v.", exp, c.body)
 	}
 }
 
@@ -92,12 +83,6 @@ func TestConfigPrepare(t *testing.T) {
 				v.Flag.Name, v.Exp, res,
 			)
 		}
-	}
-}
-
-func TestConfigJoin_IncorrectArgument(t *testing.T) {
-	if (&Config{}).Join(157) == nil {
-		t.Fail()
 	}
 }
 
