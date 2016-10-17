@@ -92,7 +92,7 @@ func (c *Config) Prepare(f *flag.Flag) {
 func parseArgName(arg string) (section string, key string) {
 	// If no delimiter is found means section is empty
 	// and the whole argument name is a key.
-	i := strings.Index(arg, *config.FlagNameSectSep)
+	i := strings.Index(arg, *config.Separator)
 	if i == -1 {
 		return "", arg
 	}

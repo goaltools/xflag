@@ -4,13 +4,11 @@ import (
 	"flag"
 )
 
-var (
-	// FlagNameSectSep is what is used for separating sections in flag names.
-	// E.g. there is a flag name "person:firstname". If the separator is ":"
-	// and INI configuration file used, the value associated with key "firstname"
-	// will be extracted from [person] section of the configuration file.
-	FlagNameSectSep = flag.String("flagNameSectSep", ":", "A separator of sections in flag names.")
-)
+// Separator is what is used for separating sections in flag names.
+// E.g. there is a flag named "person:firstname". If the separator is ":"
+// and INI configuration file used, the value associated with key "firstname"
+// will be extracted from [person] section of the configuration file.
+var Separator = flag.String("xflag:section.separator", ":", "A separator of sections in flag names.")
 
 // Interface describes the methods that must be implemented
 // in order to add support of an arbitrary configuration file format.
