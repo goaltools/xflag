@@ -1,8 +1,11 @@
 package ini
 
 import (
+	"flag"
 	"reflect"
 	"testing"
+
+	"github.com/conveyer/xflag/slices"
 )
 
 func TestConfigParse_NonExistentFile(t *testing.T) {
@@ -17,18 +20,29 @@ func TestConfigParse_InvalidConfig(t *testing.T) {
 	}
 }
 
-func TestConfigParse(t *testing.T) {
-	c := &Config{
-		body: map[string]map[string]string{},
+func TestConfigParseAndJoin(t *testing.T) {
+	c1 := &Config{
+		body: map[string]map[string]interface{}{},
 	}
-	err := c.Parse("./testdata/config1.ini")
-	assertNil(t, err)
-	err = c.Parse("./testdata/config2.ini")
-	assertNil(t, err)
-	err = c.Parse("./testdata/config3.ini")
+	err := c1.Parse("./testdata/config1.ini")
 	assertNil(t, err)
 
-	exp := map[string]map[string]string{
+	c2 := &Config{
+		body: map[string]map[string]interface{}{},
+	}
+	err = c2.Parse("./testdata/config2.ini")
+	assertNil(t, err)
+
+	c3 := &Config{
+		body: map[string]map[string]interface{}{},
+	}
+	err = c3.Parse("./testdata/config3.ini")
+	assertNil(t, err)
+
+	c1.Join(c2.body)
+	c1.Join(c3.body)
+
+	exp := map[string]map[string]interface{}{
 		"": {
 			"key1": "value1",
 			"key2": "value3",
@@ -44,36 +58,38 @@ func TestConfigParse(t *testing.T) {
 			"key1": "value2",
 		},
 	}
-	if !reflect.DeepEqual(exp, c.body) {
-		t.Errorf("Incorrectly parsed file. Expected:\n%v.\nGot:\n%v.", exp, c.body)
+	if !reflect.DeepEqual(exp, c1.body) {
+		t.Errorf("Incorrectly parsed / joined config. Expected:\n%v.\nGot:\n%v.", exp, c1.body)
 	}
 }
 
-func TestConfigGet(t *testing.T) {
+func TestConfigPrepare(t *testing.T) {
 	c := &Config{
-		body: map[string]map[string]string{
+		body: map[string]map[string]interface{}{
 			"": {
-				"key1": "value1",
+				"key1":  "value1",
+				"arr[]": []string{"1", "2", "3"},
 			},
 			"paths": {
 				"xxx": "${GOPATH} - ${GOPATH}",
 			},
 		},
 	}
-	for a, vs := range map[string]struct {
-		Value string
-		Found bool
+	for _, v := range []struct {
+		Flag *flag.Flag
+		Exp  string
 	}{
-		"key1":        {Value: "value1", Found: true},
-		"paths:xxx":   {Value: "${GOPATH} - ${GOPATH}", Found: true},
-		"section:key": {Found: false},
-		"":            {Found: false},
-		"paths:zzz":   {Found: false},
+		{&flag.Flag{Name: "key1", Value: &stringFlag{}}, "value1"},
+		{&flag.Flag{Name: "paths:xxx", Value: &stringFlag{}}, "${GOPATH} - ${GOPATH}"},
+		{&flag.Flag{Name: "non-existent-key", Value: &stringFlag{}}, ""},
+		{&flag.Flag{Name: "non-existent-section:key", Value: &stringFlag{}}, ""},
+		{&flag.Flag{Name: "arr[]", Value: &slices.Strings{}}, "[1; 2; 3]"},
 	} {
-		if v, f := c.Get(a); v != vs.Value || f != vs.Found {
+		c.Prepare(v.Flag)
+		if res := v.Flag.Value.String(); res != v.Exp {
 			t.Errorf(
-				`Requested "%s". Expected "%s", "%v"; got "%s", "%v".`,
-				a, vs.Value, vs.Found, v, f,
+				`"%s": Expected "%s", got "%s".`,
+				v.Flag.Name, v.Exp, res,
 			)
 		}
 	}
@@ -109,4 +125,14 @@ func assertNil(t *testing.T, err error) {
 	if err != nil {
 		t.Errorf(`No error expected, got "%v".`, err)
 	}
+}
+
+type stringFlag struct {
+	d string
+}
+
+func (sf *stringFlag) String() string { return string(sf.d) }
+func (sf *stringFlag) Set(v string) error {
+	sf.d = v
+	return nil
 }
