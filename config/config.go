@@ -1,3 +1,6 @@
+// Package config defines global variables and interfaces
+// that are used by configuration file parsers compatible
+// with the xflag package.
 package config
 
 import (
