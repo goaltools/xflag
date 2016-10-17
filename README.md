@@ -109,14 +109,30 @@ $ ./main --name[] James --name[] Bob
 
 #### Custom Configuration Format
 To add support of a custom configuration format, implement the
-[Config Interface](https://godoc.org/github.com/conveyer/xflag#Config). Then use it as follows:
+[`config.Interface`](https://godoc.org/github.com/conveyer/xflag/config#Interface).
+Then use it as follows:
 ```go
 package main
 
-import "github.com/conveyer/xflag"
+import (
+	"os"
+
+	"github.com/conveyer/xflag"
+)
 
 func init() {
-	xflag.DefaultConfig = MyCustomConfig
+	// Allocate a new xflag context.
+	c := xflag.New(MyCustomConfig, os.Args[1:])
+
+	// Parse the configuration files you need.
+	if err := c.Files("/path/to/file1.ini", "...", "/path/to/fileN.ini"); err != nil {
+		panic(err)
+	}
+
+	// Parse the flag set.
+	if err := c.Parse(); err != nil {
+		panic(err)
+	}
 }
 ```
 

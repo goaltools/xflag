@@ -9,13 +9,13 @@ import (
 )
 
 func TestConfigParse_NonExistentFile(t *testing.T) {
-	if err := (&Config{}).New().AddFile("file_that_does_not_exist"); err == nil {
+	if err := New().AddFile("file_that_does_not_exist"); err == nil {
 		t.Errorf("File does not exist, error expected.")
 	}
 }
 
 func TestConfigParse_InvalidConfig(t *testing.T) {
-	if err := (&Config{}).New().AddFile("./testdata/invalid.ini"); err == nil {
+	if err := New().AddFile("./testdata/invalid.ini"); err == nil {
 		t.Errorf("INI file is invalid, error expected.")
 	}
 }

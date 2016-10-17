@@ -16,9 +16,6 @@ var Separator = flag.String("xflag:section.separator", ":", "A separator of sect
 // Interface describes the methods that must be implemented
 // in order to add support of an arbitrary configuration file format.
 type Interface interface {
-	// New should allocate and return a new instance of Config.
-	New() Interface
-
 	// AddFile should open and parse one more configuration file
 	// that is expected to be merged with the current one.
 	// Values of a new file must have priority over the values of the

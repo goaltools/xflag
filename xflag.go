@@ -30,10 +30,6 @@ import (
 //		}
 //	}
 
-// DefaultConfig defines a format of configuration file
-// that will be used by the package.
-var DefaultConfig config.Interface = &ini.Config{}
-
 // Context represents a single instance of xflag.
 // It contains available arguments and parsed configuration files.
 type Context struct {
@@ -42,11 +38,12 @@ type Context struct {
 }
 
 // New allocates and returns a new Context.
-// Input arguments should not include the command name.
-func New(args []string) *Context {
+// A slice of input arguments should not include
+// the command name.
+func New(conf config.Interface, args []string) *Context {
 	return &Context{
 		args: args,
-		conf: DefaultConfig.New(),
+		conf: conf,
 	}
 }
 
@@ -85,7 +82,7 @@ func (c *Context) Parse() error {
 }
 
 // Parse is a shorthand for the following code:
-//	c := xflag.New(os.Args[1:])
+//	c := xflag.New(INIConfigParser, os.Args[1:])
 //	err := c.Files(files...)
 //	if err != nil {
 //		...
@@ -96,7 +93,7 @@ func (c *Context) Parse() error {
 //	}
 func Parse(files ...string) error {
 	// Allocate a new context using os.Args as input.
-	c := New(os.Args[1:])
+	c := New(ini.New(), os.Args[1:])
 
 	// Parse requested configuration files.
 	err := c.Files(files...)

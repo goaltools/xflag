@@ -18,7 +18,7 @@ type Config struct {
 }
 
 // New allocates and returns a new config.
-func (c *Config) New() config.Interface {
+func New() config.Interface {
 	return &Config{
 		body: map[string]map[string]interface{}{},
 	}
