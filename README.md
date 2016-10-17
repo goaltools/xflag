@@ -78,17 +78,17 @@ port = flag.Int("database:port", 0, "...")
 ```
 And the values can be overriden by running your app as `$ main --user:name "Jane Roe" --database:port 8888`.
 
-#### Slice flags
-Standard `flag` package supports simple types such as `string`, `int`, etc. Package `xflag`
-brings support of slices.
+#### Slice Flags
+Standard `flag` package supports simple types such as `string`, `int`, etc. Package `xflag/flags`
+brings support of slices:
 ```go
 var (
-	names = xflag.Strings("name[]", []string{"John", "Joe"}, "A list of names.")
-	ages  = xflag.Ints("age[]", []int{16, 18}, "A list of ages.")
+	names = flags.String("name[]", []string{"John", "Joe"}, "A list of names.")
+	ages  = flags.Int("age[]", []int{16, 18}, "A list of ages.")
 )
 ```
 A list of supported functions includes:
-`Bools`, `Durations`, `Float64s`, `Ints`, `Int64s`, `Strings`, `Uints`, `Uint64s`.
+`Bool`, `Duration`, `Float64`, `Int`, `Int64`, `String`, `Uint`, `Uint64`.
 
 Your configuration file will look as follows:
 ```ini
