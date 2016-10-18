@@ -1,15 +1,15 @@
-package slices
+package types
 
 import (
 	"strconv"
 )
 
-// Bools represents a slice of bool values,
+// Uint64s represents a slice of uint values,
 // a type that implements flag.Value and thus
 // can be used with flag.Var.
-type Bools struct {
+type Uint64s struct {
 	base
-	Value []bool
+	Value []uint64
 }
 
 //
@@ -17,30 +17,30 @@ type Bools struct {
 //
 
 // String returns the type in a human readable format.
-func (s *Bools) String() string { return str(s) }
+func (s *Uint64s) String() string { return str(s) }
 
 // Set gets a string value and adds it to the slice.
-func (s *Bools) Set(v string) error { return set(s, v) }
+func (s *Uint64s) Set(v string) error { return set(s, v) }
 
 //
 // Methods below implement slice interface.
 //
 
 // Len returns a number of elements in the slice.
-func (s *Bools) lenght() int { return len(s.Value) }
+func (s *Uint64s) lenght() int { return len(s.Value) }
 
 // Get returns a value by its index.
-func (s *Bools) get(i int) string { return strconv.FormatBool(s.Value[i]) }
+func (s *Uint64s) get(i int) string { return strconv.FormatUint(s.Value[i], 10) }
 
 // Alloc allocates a slice of values.
-func (s *Bools) alloc() { s.Value = []bool{} }
+func (s *Uint64s) alloc() { s.Value = []uint64{} }
 
 // Add adds a new value to the slice.
-func (s *Bools) add(v string) error {
-	b, err := strconv.ParseBool(v)
+func (s *Uint64s) add(v string) error {
+	u, err := strconv.ParseUint(v, 10, 64)
 	if err != nil {
 		return err
 	}
-	s.Value = append(s.Value, b)
+	s.Value = append(s.Value, u)
 	return nil
 }

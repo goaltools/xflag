@@ -6,7 +6,7 @@ import (
 	"flag"
 	"strings"
 
-	"github.com/conveyer/xflag/cflag/slices"
+	"github.com/conveyer/xflag/cflag/types"
 	"github.com/conveyer/xflag/config"
 
 	"github.com/conveyer/ini"
@@ -78,7 +78,7 @@ func (c *Config) Prepare(f *flag.Flag) {
 
 		// Indicate the end of input by using
 		// a special EOI value.
-		f.Value.Set(slices.EOI)
+		f.Value.Set(types.EOI)
 	default:
 		// By-default a string is expected, so just set it.
 		f.Value.Set(v.(string))

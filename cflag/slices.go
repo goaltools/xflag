@@ -4,7 +4,7 @@ import (
 	"flag"
 	"time"
 
-	"github.com/conveyer/xflag/cflag/slices"
+	"github.com/conveyer/xflag/cflag/types"
 )
 
 // Strings is an equivalent of flag.String but for []string value.
@@ -12,7 +12,7 @@ import (
 // and usage string. The returned value is the address of a string
 // slice variable that stores the value of the flag.
 func Strings(name string, value []string, usage string) *[]string {
-	p := &slices.Strings{Value: value}
+	p := &types.Strings{Value: value}
 	flag.Var(p, name, usage)
 	return &p.Value
 }
@@ -22,7 +22,7 @@ func Strings(name string, value []string, usage string) *[]string {
 // and usage string. The returned value is the address of an int
 // slice variable that stores the value of the flag.
 func Ints(name string, value []int, usage string) *[]int {
-	p := &slices.Ints{Value: value}
+	p := &types.Ints{Value: value}
 	flag.Var(p, name, usage)
 	return &p.Value
 }
@@ -32,7 +32,7 @@ func Ints(name string, value []int, usage string) *[]int {
 // and usage string. The returned value is the address of an int64
 // slice variable that stores the value of the flag.
 func Int64s(name string, value []int64, usage string) *[]int64 {
-	p := &slices.Int64s{Value: value}
+	p := &types.Int64s{Value: value}
 	flag.Var(p, name, usage)
 	return &p.Value
 }
@@ -42,7 +42,7 @@ func Int64s(name string, value []int64, usage string) *[]int64 {
 // and usage string. The returned value is the address of a uint
 // slice variable that stores the value of the flag.
 func Uints(name string, value []uint, usage string) *[]uint {
-	p := &slices.Uints{Value: value}
+	p := &types.Uints{Value: value}
 	flag.Var(p, name, usage)
 	return &p.Value
 }
@@ -52,7 +52,7 @@ func Uints(name string, value []uint, usage string) *[]uint {
 // and usage string. The returned value is the address of a uint64
 // slice variable that stores the value of the flag.
 func Uint64s(name string, value []uint64, usage string) *[]uint64 {
-	p := &slices.Uint64s{Value: value}
+	p := &types.Uint64s{Value: value}
 	flag.Var(p, name, usage)
 	return &p.Value
 }
@@ -62,7 +62,7 @@ func Uint64s(name string, value []uint64, usage string) *[]uint64 {
 // and usage string. The returned value is the address of a float64
 // slice variable that stores the value of the flag.
 func Float64s(name string, value []float64, usage string) *[]float64 {
-	p := &slices.Float64s{Value: value}
+	p := &types.Float64s{Value: value}
 	flag.Var(p, name, usage)
 	return &p.Value
 }
@@ -72,7 +72,7 @@ func Float64s(name string, value []float64, usage string) *[]float64 {
 // and usage string. The returned value is the address of a bool
 // slice variable that stores the value of the flag.
 func Bools(name string, value []bool, usage string) *[]bool {
-	p := &slices.Bools{Value: value}
+	p := &types.Bools{Value: value}
 	flag.Var(p, name, usage)
 	return &p.Value
 }
@@ -82,7 +82,7 @@ func Bools(name string, value []bool, usage string) *[]bool {
 // and usage string. The returned value is the address of a time.Duration
 // slice variable that stores the value of the flag.
 func Durations(name string, value []time.Duration, usage string) *[]time.Duration {
-	p := &slices.Durations{Value: value}
+	p := &types.Durations{Value: value}
 	flag.Var(p, name, usage)
 	return &p.Value
 }

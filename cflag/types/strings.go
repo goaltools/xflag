@@ -1,4 +1,4 @@
-package slices
+package types
 
 // Strings represents a slice of string values,
 // a type that implements flag.Value and thus
