@@ -86,8 +86,8 @@ Standard `flag` package supports simple types such as `string`, `int`, etc. Pack
 brings support of *complex* types including slices:
 ```go
 var (
-	names = cflag.Strings("name[]", []string{"John", "Joe"}, "A list of names.")
-	ages  = cflag.Ints("age[]", []int{16, 18}, "A list of ages.")
+	names = cflag.Strings("names", []string{"John", "Joe"}, "A list of names.")
+	ages  = cflag.Ints("ages", []int{16, 18}, "A list of ages.")
 )
 ```
 *A list of related functions includes:*
@@ -104,7 +104,7 @@ age[] = 46
 
 And in order to pass an array of parameters using console line, repeat the same flag name multiple times:
 ```sh
-$ ./main --name[] James --name[] Bob
+$ ./main --names James --names Bob
 ```
 
 #### Custom Configuration Format

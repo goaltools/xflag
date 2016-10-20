@@ -58,8 +58,8 @@ func TestConfigPrepare(t *testing.T) {
 	c := &Config{
 		body: map[string]map[string]interface{}{
 			"": {
-				"key1":  "value1",
-				"arr[]": []string{"1", "2", "3"},
+				"key1": "value1",
+				"arr":  []string{"1", "2", "3"},
 			},
 			"paths": {
 				"xxx": "${GOPATH} - ${GOPATH}",
@@ -74,7 +74,7 @@ func TestConfigPrepare(t *testing.T) {
 		{&flag.Flag{Name: "paths:xxx", Value: &stringFlag{}}, "${GOPATH} - ${GOPATH}"},
 		{&flag.Flag{Name: "non-existent-key", Value: &stringFlag{}}, ""},
 		{&flag.Flag{Name: "non-existent-section:key", Value: &stringFlag{}}, ""},
-		{&flag.Flag{Name: "arr[]", Value: &types.Strings{}}, "[1; 2; 3]"},
+		{&flag.Flag{Name: "arr", Value: &types.Strings{}}, "[1; 2; 3]"},
 	} {
 		c.Prepare(v.Flag)
 		if res := v.Flag.Value.String(); res != v.Exp {
