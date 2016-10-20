@@ -95,11 +95,11 @@ var (
 
 Your configuration file may look as follows:
 ```ini
-name[] = Name1
-name[] = Name2
+names[] = Name1
+names[] = Name2
 
-age[] = 35
-age[] = 46
+ages[] = 35
+ages[] = 46
 ```
 
 And in order to pass an array of parameters using console line, repeat the same flag name multiple times:
