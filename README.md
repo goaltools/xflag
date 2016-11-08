@@ -109,7 +109,7 @@ $ ./main --names James --names Bob
 
 #### Custom Configuration Format
 To add support of a custom configuration format, implement the
-[`config.Interface`](https://godoc.org/github.com/conveyer/xflag/config#Interface).
+[`config.Interface`](https://godoc.org/github.com/conveyer/config#Interface).
 Then use it as follows:
 ```go
 package main
