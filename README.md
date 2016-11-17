@@ -104,7 +104,7 @@ ages[] = 46
 
 And in order to pass an array of parameters using console line, repeat the same flag name multiple times:
 ```sh
-$ ./main --names James --names Bob
+$ ./main --names[] James --names[] Bob
 ```
 
 #### Custom Configuration Format

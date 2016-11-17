@@ -1,6 +1,6 @@
 // +build ignore
 
-// Package main demonstrates the use `xflag` and `xflag/cflag`.
+// Package main demonstrates the use of `xflag` and `xflag/cflag`.
 package main
 
 import (
