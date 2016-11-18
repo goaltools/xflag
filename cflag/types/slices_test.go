@@ -98,7 +98,7 @@ type test struct {
 	d []string
 }
 
-func (t *test) lenght() int {
+func (t *test) length() int {
 	return len(t.d)
 }
 

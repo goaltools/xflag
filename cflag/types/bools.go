@@ -27,7 +27,7 @@ func (s *Bools) Set(v string) error { return set(s, v) }
 //
 
 // Len returns a number of elements in the slice.
-func (s *Bools) lenght() int { return len(s.Value) }
+func (s *Bools) length() int { return len(s.Value) }
 
 // Get returns a value by its index.
 func (s *Bools) get(i int) string { return strconv.FormatBool(s.Value[i]) }

@@ -27,7 +27,7 @@ func (s *Uints) Set(v string) error { return set(s, v) }
 //
 
 // Len returns a number of elements in the slice.
-func (s *Uints) lenght() int { return len(s.Value) }
+func (s *Uints) length() int { return len(s.Value) }
 
 // Get returns a value by its index.
 func (s *Uints) get(i int) string { return strconv.FormatUint(uint64(s.Value[i]), 10) }

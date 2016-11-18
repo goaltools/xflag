@@ -3,7 +3,7 @@ package types
 // slice is an interface that defines methods that
 // every slice type must implement.
 type slice interface {
-	lenght() int
+	length() int
 	get(i int) string
 
 	alloc()
@@ -36,7 +36,7 @@ func (b *base) requireInit(yes bool) {
 func str(s slice) string {
 	// If there are no elements in the slice,
 	// return nothing.
-	l := s.lenght()
+	l := s.length()
 	if l == 0 {
 		return "[]"
 	}

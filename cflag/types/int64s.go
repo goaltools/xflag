@@ -27,7 +27,7 @@ func (s *Ints) Set(v string) error { return set(s, v) }
 //
 
 // Len returns a number of elements in the slice.
-func (s *Ints) lenght() int { return len(s.Value) }
+func (s *Ints) length() int { return len(s.Value) }
 
 // Get returns a value by its index.
 func (s *Ints) get(i int) string { return strconv.Itoa(s.Value[i]) }

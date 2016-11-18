@@ -27,7 +27,7 @@ func (s *Float64s) Set(v string) error { return set(s, v) }
 //
 
 // Len returns a number of elements in the slice.
-func (s *Float64s) lenght() int { return len(s.Value) }
+func (s *Float64s) length() int { return len(s.Value) }
 
 // Get returns a value by its index.
 func (s *Float64s) get(i int) string { return strconv.FormatFloat(s.Value[i], 'f', -1, 64) }
