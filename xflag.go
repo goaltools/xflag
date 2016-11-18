@@ -39,7 +39,20 @@ type Context struct {
 	args []string
 	conf config.Interface
 
-	separat, arrLit string
+	// Separator is a string that separates different objects or
+	// section from key in flag names.
+	// By default ":" is used as a separator if Context is allocated
+	// using the New constructor.
+	// Flag name with the separator may look as "mySection:myKey".
+	Separator string
+
+	// ArrLiteral is a string that is if included at the end of a flag
+	// name means that the flag must be treated as an array rather than
+	// as a scalar type.
+	// By default "[]" is used as an array literal if Context is allocated
+	// using the New constructor.
+	// Flag name with the array literal may look as "mySection:myKey[]".
+	ArrLiteral string
 }
 
 // New allocates and returns a new Context.
@@ -49,6 +62,9 @@ func New(conf config.Interface, args []string) *Context {
 	return &Context{
 		args: args,
 		conf: conf,
+
+		Separator:  ":",
+		ArrLiteral: "[]",
 	}
 }
 
@@ -70,12 +86,6 @@ func (c *Context) Files(files ...string) error {
 // 2. Command line arguments list.
 // The latter has higher priority.
 func (c *Context) ParseSet(fset *flag.FlagSet) error {
-	// Prepare settings for processing flag names.
-	// Redefinition of these values by editing the configuration
-	// files is possible.
-	c.separat = c.conf.Value("@xflag", "flag.name.separator").StringDefault(":")
-	c.arrLit = c.conf.Value("@xflag", "flag.name.array.literal").StringDefault("[]")
-
 	// Iterate over all available flags.
 	fset.VisitAll(func(f *flag.Flag) {
 		// And try to initialize them using values of configuration files.
@@ -121,8 +131,18 @@ func (c *Context) process(f *flag.Flag) {
 	// Split the flag name into parts.
 	path, arr := c.parseFlagName(f.Name)
 
-	// Receive an associated value.
-	v := c.conf.ValuePrefixless(path...)
+	// Receive a value associated with the path.
+	var v config.ValueInterface
+	switch len(path) > 1 {
+	case true:
+		// If there are many elements in the path, use the first
+		// one as an object path (in terms of config.Interface).
+		v = c.conf.At(path[0]).Value(path[1:]...)
+	default:
+		// Otherwise, use all of them, if any,
+		// as an element path.
+		v = c.conf.Value(path...)
+	}
 
 	// Process the flag depending on the expected type.
 	switch arr {
@@ -151,16 +171,16 @@ func (c *Context) process(f *flag.Flag) {
 	}
 }
 
-// parseFlagName splits a flag name into a set of fragments
-// using the separator specified in the configuration.
-// The second argument is true if the flag name ends with an
-// array literal.
+// parseFlagName splits a flag name into a set of fragments using the
+// earlier specified separator.
+// The second arr argument is true if the flag name ends with an
+// array literal that was expected to be specified earlier as well.
 func (c *Context) parseFlagName(n string) (path []string, arr bool) {
 	// Trim the array literal.
-	s := strings.TrimRight(n, c.arrLit)
+	s := strings.TrimRight(n, c.ArrLiteral)
 
 	// Split the name using the specified separator.
-	path = strings.Split(s, c.separat)
+	path = strings.Split(s, c.Separator)
 
 	// Return the result.
 	return path, s != n
