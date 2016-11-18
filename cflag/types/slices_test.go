@@ -32,9 +32,9 @@ func TestBaseInit(t *testing.T) {
 
 func TestStr(t *testing.T) {
 	for exp, inp := range map[string]*test{
-		"[]":        &test{},
-		"[a]":       &test{d: []string{"a"}},
-		"[a; b; c]": &test{d: []string{"a", "b", "c"}},
+		"[]":        {},
+		"[a]":       {d: []string{"a"}},
+		"[a; b; c]": {d: []string{"a", "b", "c"}},
 	} {
 		if res := str(inp); res != exp {
 			t.Errorf(`"%v": Expected "%s", got "%s".`, inp, exp, res)
