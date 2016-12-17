@@ -3,16 +3,16 @@ Package `xflag` is a hybrid configuration library that combines Go's standard
 [`flag`](https://golang.org/pkg/flag/) package, INI or other configuration files,
 and environment variables. Plus, provides support of slice flags.
 
-[![GoDoc](https://godoc.org/github.com/conveyer/xflag?status.svg)](https://godoc.org/github.com/conveyer/xflag)
-[![Build Status](https://travis-ci.org/conveyer/xflag.svg?branch=master)](https://travis-ci.org/conveyer/xflag)
-[![Windows Build Status](https://ci.appveyor.com/api/projects/status/ee1b1c8tx7d5k2tc?svg=true)](https://ci.appveyor.com/project/alkchr/xflag)
-[![Coverage](https://codecov.io/github/conveyer/xflag/coverage.svg?branch=master)](https://codecov.io/github/conveyer/xflag?branch=master)
-[![Go Report Card](http://goreportcard.com/badge/conveyer/xflag?t=3)](http:/goreportcard.com/report/conveyer/xflag)
+[![GoDoc](https://godoc.org/github.com/goaltools/xflag?status.svg)](https://godoc.org/github.com/goaltools/xflag)
+[![Build Status](https://travis-ci.org/goaltools/xflag.svg?branch=master)](https://travis-ci.org/goaltools/xflag)
+[![Windows Build Status](https://ci.appveyor.com/api/projects/status/ee1b1c8tx7d5k2tc?svg=true)](https://ci.appveyor.com/project/alconaut/xflag)
+[![Coverage](https://codecov.io/github/goaltools/xflag/coverage.svg?branch=master)](https://codecov.io/github/goaltools/xflag?branch=master)
+[![Go Report Card](http://goreportcard.com/badge/goaltools/xflag?t=3)](http:/goreportcard.com/report/goaltools/xflag)
 
 ### Installation
 *Use `-u` ("update") flag to make sure the latest version of package is installed.*
 ```bash
-go get -u github.com/conveyer/xflag
+go get -u github.com/goaltools/xflag
 ```
 
 ### Basic Principles
@@ -22,14 +22,14 @@ go get -u github.com/conveyer/xflag
 3. It is possible to override values of the configuration file when running your app using flags.
 
 ### Usage
-By default, [`INI` configuration](https://github.com/conveyer/ini#format) files are expected.
+By default, [`INI` configuration](https://github.com/goaltools/ini#format) files are expected.
 ```go
 package main
 
 import (
 	"flag"
 
-	"github.com/conveyer/xflag"
+	"github.com/goaltools/xflag"
 )
 
 var (
@@ -117,7 +117,7 @@ package main
 import (
 	"os"
 
-	"github.com/conveyer/xflag"
+	"github.com/goaltools/xflag"
 )
 
 func init() {

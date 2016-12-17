@@ -7,7 +7,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/conveyer/xflag/cflag"
+	"github.com/goaltools/xflag/cflag"
 )
 
 var (

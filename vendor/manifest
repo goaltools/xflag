@@ -1,0 +1,21 @@
+{
+	"version": 0,
+	"dependencies": [
+		{
+			"importpath": "github.com/conveyer/config",
+			"repository": "https://github.com/conveyer/config",
+			"vcs": "git",
+			"revision": "43b559209f2b2db0ddab4a6a5808fd7d3e321e73",
+			"branch": "master",
+			"notests": true
+		},
+		{
+			"importpath": "github.com/conveyer/ini",
+			"repository": "https://github.com/conveyer/ini",
+			"vcs": "git",
+			"revision": "109f4af85690dac300eb13ac1c97cd18a807f7ce",
+			"branch": "master",
+			"notests": true
+		}
+	]
+}

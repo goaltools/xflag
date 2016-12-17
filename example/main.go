@@ -7,8 +7,8 @@ import (
 	"flag"
 	"log"
 
-	"github.com/conveyer/xflag"
-	"github.com/conveyer/xflag/cflag"
+	"github.com/goaltools/xflag"
+	"github.com/goaltools/xflag/cflag"
 )
 
 var (

@@ -7,7 +7,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/conveyer/xflag/cflag/types"
+	"github.com/goaltools/xflag/cflag/types"
 
 	"github.com/conveyer/config"
 	"github.com/conveyer/config/ini"
@@ -21,7 +21,7 @@ import (
 //		"flag"
 //		"log"
 //
-//		"github.com/conveyer/xflag"
+//		"github.com/goaltools/xflag"
 //	)
 //
 //	var sampleFlag = flag.String("test:sample", "default value", "comment here...")

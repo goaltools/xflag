@@ -4,7 +4,7 @@ import (
 	"flag"
 	"time"
 
-	"github.com/conveyer/xflag/cflag/types"
+	"github.com/goaltools/xflag/cflag/types"
 )
 
 // Strings is an equivalent of flag.String but for []string value.
